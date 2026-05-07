@@ -17,7 +17,6 @@ If you use this code, please cite the above, mentioned publication.
 | Model-based sequence clustering | ClickClust | `ClickClust` | Melnykov (2016) |
 | Functional co-clustering | FunLBM | `funLBM` | Bouveyron et al. (2018) |
 
----
 
 ## Requirements
 
@@ -65,7 +64,6 @@ The format of the data as expected by the code is described below.
 | `time` | POSIXct (tz = `Europe/Copenhagen`) | Timestamp at hourly resolution |
 | `occ_estimated` | logical / 0–1 | Binary estimated occupancy indicator |
 
----
 
 ## Output
 
@@ -83,7 +81,6 @@ Intermediate clustering objects are cached in `data/cluster/` as `.RDS` files
 so that the computationally expensive fitting steps (CFDA encoding, ClickClust,
 FunLBM) can be skipped on subsequent runs by reading directly from disk.
 
----
 
 ## Computational notes
 
@@ -94,7 +91,7 @@ FunLBM) can be skipped on subsequent runs by reading directly from disk.
 
 Adjust the `workers` arguments and `nCores` to match your hardware before
 running.
----
+
 
 ## References
 
