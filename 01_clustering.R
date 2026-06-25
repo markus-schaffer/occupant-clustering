@@ -16,11 +16,11 @@
 #                                   buildings (columns: bldg_id, time,
 #                                   occ_estimated)
 # Output:
-#   plots/01_hourly_occupancy.pdf        –  Annual occupancy heatmap (Fig. 7)
-#   plots/02_hourly_occupancy_cfda.pdf   –  CFDA cluster heatmaps
-#   plots/03_hourly_occupancy_lbm.pdf    –  FunLBM cluster heatmaps
-#   plots/04_lbm_combined.pdf            –  FunLBM time clusters + profiles
-#   plots/05_cls_comparison.pdf          –  Cross-method cluster comparison
+#   plots/01_hourly_occupancy.pdf        –  Annual occupancy heatmap (not shown)
+#   plots/02_hourly_occupancy_cfda.pdf   –  CFDA cluster heatmaps (Figure 1)
+#   plots/03_hourly_occupancy_lbm.pdf    –  FunLBM cluster heatmaps (Figure 2)
+#   plots/04_lbm_combined.pdf            –  FunLBM time clusters + profiles (Figure 3)
+#   plots/05_cls_comparison.pdf          –  Cross-method cluster comparison (Figure 4)
 #
 # References:
 #   Preda et al. (2021) https://doi.org/10.3390/math9233074
@@ -233,7 +233,7 @@ occ_dt[, weekday := wday(time,
 )]
 
 
-# 4. Exploratory visualisation – annual occupancy overview ====================
+# 4. Exploratory analysis – annual occupancy overview =========================
 
 ## 4.1 Holiday annotation strip -----------------------------------------------
 
@@ -339,6 +339,23 @@ ggsave(
   device = pdf
 )
 
+## 4.4 Summary statistics -----------------------------------------------------
+occ_dt[, any(occ_estimated), by = list(day, bldg_id)][, sum(V1), by = bldg_id]
+
+bldg_stats <- occ_dt[, .(
+    mean_occ = mean(occ_estimated, na.rm = TRUE) * 100,
+    avg_hours_per_day = mean(occ_estimated, na.rm = TRUE) * 24
+  ), by = bldg_id]
+
+bldg_summary <- bldg_stats[, .(
+  mean_occ_mean = mean(mean_occ),
+  mean_occ_sd = sd(mean_occ),
+  mean_occ_min = min(mean_occ),
+  mean_occ_max = max(mean_occ),
+  avg_hours_per_day_mean = mean(avg_hours_per_day),
+  avg_hours_per_day_sd = sd(avg_hours_per_day)
+)]
+bldg_summary
 
 # 5. Clustering method 1: CFDA ================================================
 #
